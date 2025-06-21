@@ -71,8 +71,11 @@ public class RoomServiceImplement implements RoomService {
         }
         if(roomDto.getType() != null) existingRoom.setRoomType(roomDto.getType());
         if (roomDto.getDescription() != null) existingRoom.setDescription(roomDto.getDescription());
-
-        roomRepository.save(existingRoom);
+try {
+    roomRepository.save(existingRoom);
+}catch (Exception e){
+    e.printStackTrace();
+}
         return ResponseDto.builder()
                 .status(HttpStatus.OK.value())
                 .message("Room updated successfully")

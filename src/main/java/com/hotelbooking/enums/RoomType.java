@@ -3,6 +3,6 @@ package com.hotelbooking.enums;
 public enum RoomType {
     SINGLE,
     DOUBLE,
-    SUIT,
+    SUITE,
     TRIPLE;
 }
