@@ -37,16 +37,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Profile profile;
+
     private Boolean isActive;
     private final LocalDateTime createdAt = LocalDateTime.now();
-
-//    private LocalDateTime createdAt;
-//
-//    @PrePersist
-//    public void prePersist() {
-//        if (createdAt == null) {
-//            createdAt = LocalDateTime.now();
-//        }
-//    }
-
 }

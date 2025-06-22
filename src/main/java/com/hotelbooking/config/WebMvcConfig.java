@@ -7,6 +7,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry){
-        registry.addResourceHandler("/product-image/**").addResourceLocations("file:product-image/");
+        registry.addResourceHandler("/product-image/**")
+                .addResourceLocations("file:product-image/");
+
+        registry.addResourceHandler("/profile-image/**")
+                .addResourceLocations("file:profile-image/");
+
     }
 }
