@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -33,8 +32,8 @@ public class Profile {
     @Column(length = 50)
     private String country;
 
-    @Column(length = 2000)
-    private String bio;
+    @Column(length = 50)
+    private String occupation;
 
     @Column(length = 20)
     private String gender;

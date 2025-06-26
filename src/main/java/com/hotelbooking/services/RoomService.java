@@ -6,7 +6,6 @@ import com.hotelbooking.enums.RoomType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public interface RoomService {
     ResponseDto addRoom(RoomDto roomDto, MultipartFile imageFile);

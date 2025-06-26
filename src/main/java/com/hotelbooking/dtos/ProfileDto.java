@@ -1,18 +1,19 @@
 package com.hotelbooking.dtos;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfileDto {
+    private Long id;
+
     @Size(max = 100)
     private String address;
 
@@ -22,8 +23,8 @@ public class ProfileDto {
     @Size(max = 50)
     private String country;
 
-    @Size(max = 2000)
-    private String bio;
+    @Size(max = 50)
+    private String occupation;
 
     @Size(max = 20)
     private String gender;

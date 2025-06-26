@@ -2,6 +2,7 @@ package com.hotelbooking.services.impl;
 
 import com.hotelbooking.dtos.*;
 import com.hotelbooking.entities.Booking;
+import com.hotelbooking.entities.Profile;
 import com.hotelbooking.entities.User;
 import com.hotelbooking.enums.UserRole;
 import com.hotelbooking.exceptions.InvalidCredentialException;
@@ -24,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +61,11 @@ public class UserServiceImpl implements UserService {
                 .role(role)
                 .isActive(Boolean.TRUE)
                 .build();
+
+        // Create a new profile for the user
+        Profile profile = new Profile();
+        profile.setUser(userToSave);
+        userToSave.setProfile(profile);
 
         userRepository.save(userToSave);
 

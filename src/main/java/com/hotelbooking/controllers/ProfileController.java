@@ -18,21 +18,42 @@ public class ProfileController {
     @PostMapping("/{userId}")
     public ResponseEntity<ResponseDto> createProfile(
             @PathVariable Long userId,
-            @RequestParam String address,
-            @RequestParam String city,
-            @RequestParam String country,
-            @RequestParam String bio,
-            @RequestParam String gender,
-            @RequestParam MultipartFile profilePictureUrl) {
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String occupation,
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) MultipartFile profilePictureUrl) {
 
         ProfileDto dto = ProfileDto.builder()
                 .address(address)
                 .gender(gender)
                 .city(city)
                 .country(country)
-                .bio(bio)
+                .occupation(occupation)
                 .build();
 
         return ResponseEntity.ok(profileService.createProfile(userId,dto,profilePictureUrl));
+    }
+
+    @PutMapping("/{profileId}")
+    public ResponseEntity<ResponseDto> updateProfile(
+            @PathVariable Long profileId,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String occupation,
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) MultipartFile profilePictureUrl
+    ) {
+        ProfileDto dto = ProfileDto.builder()
+                .address(address)
+                .gender(gender)
+                .city(city)
+                .country(country)
+                .occupation(occupation)
+                .build();
+log.info(String.valueOf(profilePictureUrl));
+        return ResponseEntity.ok(profileService.updateProfile(profileId, dto, profilePictureUrl));
     }
 }

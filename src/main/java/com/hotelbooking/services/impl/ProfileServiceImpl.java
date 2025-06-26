@@ -34,12 +34,23 @@ public class ProfileServiceImpl implements ProfileService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
 
-//        if (profileRepository.existsByUser(user)) {
-//            throw new IllegalArgumentException("Profile already exists for user id: " + userId);
-//        }
-
         Profile profileToSave = modelMapper.map(profileDto, Profile.class);
         profileToSave.setUser(user);
+
+        if (profileDto.getAddress() != null)
+            profileToSave.setAddress(profileDto.getAddress());
+
+        if (profileDto.getCity() != null)
+            profileToSave.setCity(profileDto.getCity());
+
+        if (profileDto.getCountry() != null)
+            profileToSave.setCountry(profileDto.getCountry());
+
+        if (profileDto.getOccupation() != null)
+            profileToSave.setOccupation(profileDto.getOccupation());
+
+        if (profileDto.getGender() != null)
+            profileToSave.setGender(profileDto.getGender());
 
         if(imageFile != null){
             String imagePath = saveImage(imageFile);
@@ -54,18 +65,45 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ResponseDto updateProfile(ProfileDto profileDto, MultipartFile imageFile) {
-        return null;
-    }
+    public ResponseDto updateProfile(Long profileId, ProfileDto profileDto, MultipartFile imageFile) {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new NotFoundException("Profile not found with id: " + profileId));
 
-    @Override
-    public ResponseDto getProfileById(Long profileId) {
-        return null;
-    }
+        // Store old image path before potential update
+        String oldImagePath = profile.getProfilePictureUrl();
 
-    @Override
-    public void deleteProfile(Long profileId) {
+        if (profileDto.getAddress() != null) {
+            profile.setAddress(profileDto.getAddress());
+        }
+        if (profileDto.getCity() != null) {
+            profile.setCity(profileDto.getCity());
+        }
+        if (profileDto.getCountry() != null) {
+            profile.setCountry(profileDto.getCountry());
+        }
+        if (profileDto.getOccupation() != null) {
+            profile.setOccupation(profileDto.getOccupation());
+        }
+        if (profileDto.getGender() != null) {
+            profile.setGender(profileDto.getGender());
+        }
 
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String newImagePath = saveImage(imageFile);
+            profile.setProfilePictureUrl(newImagePath);
+        }
+
+        // Delete old image if it exists
+        if (oldImagePath != null && !oldImagePath.isEmpty()) {
+            deleteOldImage(oldImagePath);
+        }
+
+        profileRepository.save(profile);
+
+        return ResponseDto.builder()
+                .status(HttpStatus.OK.value())
+                .message("Profile updated successfully")
+                .build();
     }
 
     // Save Image Into IMAGE_DIRECTORY
@@ -88,6 +126,23 @@ public class ProfileServiceImpl implements ProfileService {
             return "profile-image/" + uniqueFileName;
         } catch (Exception ex) {
             throw new IllegalArgumentException("Failed to save image: " + ex.getMessage());
+        }
+    }
+
+    // Delete Image From IMAGE_DIRECTORY
+    private void deleteOldImage(String oldImagePath) {
+        try {
+            // Extract filename from path
+            String filename = oldImagePath.replace("profile-image/", "");
+            File oldImageFile = new File(IMAGE_DIRECTORY, filename);
+
+            if (oldImageFile.exists()) {
+                if (!oldImageFile.delete()) {
+                    log.warn("Failed to delete old image file: {}", oldImagePath);
+                }
+            }
+        } catch (SecurityException e) {
+            log.error("Security exception while deleting old image: {}", e.getMessage());
         }
     }
 }
