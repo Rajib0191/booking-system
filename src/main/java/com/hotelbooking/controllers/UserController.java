@@ -31,6 +31,12 @@ public class UserController {
         return ResponseEntity.ok(userService.deleteOwnAccount());
     }
 
+    @DeleteMapping("/delete/{userId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ResponseDto> deleteUserByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.deleteUserById(userId));
+    }
+
     @GetMapping("/account")
     public ResponseEntity<ResponseDto> getOwnAccountDetails(){
         return ResponseEntity.ok(userService.getOwnAccountDetails());

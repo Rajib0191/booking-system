@@ -171,6 +171,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseDto deleteUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new  NotFoundException("User Not Found!"));
+        userRepository.delete(user);
+        return ResponseDto.builder()
+                .status(HttpStatus.OK.value())
+                .message("User Deleted Successfully!")
+                .build();
+    }
+
+    @Override
     public ResponseDto getMyBookingHistory() {
         User existingUser = getCurrentLoggedInUser();
         List<Booking> bookingList = bookingRepository.findByUserId(existingUser.getId());

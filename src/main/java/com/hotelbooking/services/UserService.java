@@ -14,6 +14,7 @@ public interface UserService {
     ResponseDto getOwnAccountDetails();
     ResponseDto updateOwnAccount(UserDto userDto);
     ResponseDto deleteOwnAccount();
+    ResponseDto deleteUserById(Long userId);
     ResponseDto getMyBookingHistory();
     User getCurrentLoggedInUser();
 }
