@@ -105,12 +105,21 @@ public class BookingServiceImpl implements BookingService {
         //send notification via email
         NotificationDto notificationDto = NotificationDto.builder()
                 .recipient(user.getEmail())
-                .subject("Booking Confirmation")
-//                .body(String.format("""
-//                        Your booking has been created successfully.
-//                        Please proceed with your payment using the payment link below\s
-//                        n%s""", paymentUrl))
-                .body(String.format("Your booking has been created successfully.\n\n Please proceed with your payment using the payment link below "+"\n\n", paymentUrl))
+                .subject("Booking Confirmation "  + bookingReference)
+                .body(String.format("""
+                        Dear %s,
+                        
+                        BOOKING DETAILS
+                        ──────────────
+                        ➤ Reference: %s
+                        ➤ Amount: %s
+                        ➤ Payment Link: %s
+                        
+                        Thank you for choosing us!""",
+                        user.getFirstName(),
+                        bookingReference,
+                        totalPrice,
+                        paymentUrl))
                 .bookingReference(bookingReference)
                 .build();
         notification.sendEmail(notificationDto); //sending email

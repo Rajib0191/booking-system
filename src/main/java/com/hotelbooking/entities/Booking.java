@@ -42,5 +42,5 @@ public class Booking {
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus  bookingStatus;
+    private BookingStatus bookingStatus;
 }
